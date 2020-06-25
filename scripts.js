@@ -17,6 +17,8 @@ var categoryID = 9;
 var type = 'multiple';
 var endpoint = 'https://opentdb.com/api.php?amount=10&category=9&type=multiple'
 
+var correct_api = [];
+
 // Está función se ecargara de obtener todas las categorías disponibles
 function getCategories() {
     const endpointCategories = 'https://opentdb.com/api_category.php'
@@ -43,85 +45,128 @@ function printCategories(categories) {
 
     selectCategories.innerHTML = html
 }
-
+//seleciona categoria
 function selectCategory() {
-    categoryID = document.getElementById('select-categories').value
-    alert(`Se seleccionó la categoría con el id ${categoryID}`)  
+    categoryID = document.getElementById('select-categories').value 
 }
-
+//seleccriona tipo de pregunta
 function selectType() {
     type = document.getElementById('select-types').value
-    alert(`Se seleccionó tipo de pregunta: ${type}`)
 }
+//se imprimen preguntas
 function printCuestions(questions)
 {
     const questions_form = document.getElementById('questions-form');
     let answers = [];
-    console.log(questions_form)
-    console.log(questions)
+    correct_api = [];
+    let index = 0;
     let html = '';
     if(type =='multiple')
     {
         questions.forEach(question =>
-            {
+            {   
+               
                 html += `<div class="card mt-5 col-4 " style="width: 18rem;">
                               <div class="card-body">
                                   <h5 class="card-title text-justify">${question.question}</h5>
                                   <div class="ml-4 mt-3">
                                       <div class="radio">
-                                          <label><input type="radio" name="optradio" checked>${question.correct_answer}</label>
+                                          <label><input type="radio" name="${index}" value="${question.correct_answer}">${question.correct_answer}</input></label>
                                       </div>
                                       <div class="radio">
-                                          <label><input type="radio" name="optradio">${question.incorrect_answers[0]}</label>
+                                          <label><input type="radio" name="${index}" value="${question.incorrect_answers[0]}" checked>${question.incorrect_answers[0]}</input></label>
                                       </div>
                                       <div class="radio">
-                                          <label><input type="radio" name="optradio" checked>${question.incorrect_answers[1]}</label>
+                                          <label><input type="radio" name="${index}" value="${question.incorrect_answers[1]}">${question.incorrect_answers[1]}</input></label>
                                       </div>
                                       <div class="radio">
-                                          <label><input type="radio" name="optradio">${question.incorrect_answers[2]}</label>
+                                          <label><input type="radio" name="${index}" value="${question.incorrect_answers[2]}">${question.incorrect_answers[2]}</input></label>
                                       </div>
                                   </div>
                               </div>
-                          </div>`;});
+                          </div>`;
+                if(index == questions.length - 1)
+                {
+                    html += `<div class="card mt-5 row col-8 ml-1">
+                                <div class="d-flex">
+                                    <div class=" mt-5 col-6 " style="width: 18rem;">
+                                        <h1 class="card-title text-center" id="correct">0</h1>
+                                        <h5 class="card-title text-center">Respuestas correctas</h5>
+                                    </div>
+                                    <div class=" mt-5 col-6 " style="width: 18rem;">
+                                        <h1 class="card-title text-center " id="wrong">0</h1>
+                                        <h5 class="card-title text-center">Respuestas incorrectas</h5>
+                                    </div>
+                                </div>
+                               
+                                <button type="button" onclick="answers_user()" class="btn btn-primary btn-lg btn-block mt-5">Enviar Respuestas</button>
+                            </div>`;
+                }    
+                correct_api[index] = question.correct_answer; 
+                index ++; 
+            });
     }
     else
-    {
-        
+    {   
         questions.forEach(question =>
             {
                 if(question.correct_answer == "True")
                 {
                     answers[0] = question.correct_answer;
                     answers[1] = question.incorrect_answers[0];
+                    correct_api[index] = answers[0]; 
                 }
                 else
                 {
                     answers[0] = question.incorrect_answers[0];
                     answers[1] = question.correct_answer;
+                    correct_api[index] = answers[1];
+                
                 }
                 html += `<div class="card mt-5 col-4 " style="width: 18rem;">
                               <div class="card-body">
                                   <h5 class="card-title text-justify">${question.question}</h5>
                                   <div class="ml-4 mt-3">
                                       <div class="radio">
-                                           <label><input type="radio" name="optradio" checked>${answers[0]}</label>
+                                           <label><input type="radio" name="${index}" value="${answers[0]}" checked>${answers[0]}</input></label>
                                       </div>
                                       <div class="radio">
-                                           <label><input type="radio" name="optradio">${answers[1]}</label>
+                                           <label><input type="radio" name="${index}" value="${answers[1]}">${answers[1]}</input></label>
                                       </div>
                                   </div>
                               </div>
-                          </div>`;});
+                          </div>`;
+
+                          if(index == questions.length - 1)
+                          {
+                              html += `<div class="card mt-5 row col-8 ml-1">
+                                          <div class="d-flex">
+                                              <div class=" mt-5 col-6 " style="width: 18rem;">
+                                                  <h1 class="card-title text-center" id="correct">0</h1>
+                                                  <h5 class="card-title text-center">Respuestas correctas</h5>
+                                              </div>
+                                              <div class=" mt-5 col-6 " style="width: 18rem;">
+                                                  <h1 class="card-title text-center " id="wrong">0</h1>
+                                                  <h5 class="card-title text-center">Respuestas incorrectas</h5>
+                                              </div>
+                                          </div>
+                                         
+                                          <button type="button" onclick="answers_user()" class="btn btn-primary btn-lg btn-block mt-5">Enviar Respuestas</button>
+                                      </div>`;
+                          }
+                index++;      
+            });
+                      
     }
-                                        
+
     questions_form.innerHTML = html
-    
+
 }
+//obtengo preguntas de la api
 function getCuestions()
 {
     alert(`se imprimiran preguntas`)
     endpoint = `https://opentdb.com/api.php?amount=10&category=${categoryID}&type=${type}`
-    console.log(endpoint)
 
     fetch(endpoint)
         .then(response => response.json())
@@ -132,6 +177,28 @@ function getCuestions()
             console.error(error)
         })
 }
+//calculo respuestas de usuario
+function answers_user()
+{
+    let options;
+    let answers =[];
+    let count = 0;
 
+    do
+    {
+        options= document.getElementsByName(count);
+        options.forEach(option =>
+                        {
+                            if(option.checked)
+                            {
+                                answers[count] = option.value;
+                            }           
+                        });
+        count++;                
+    }while(count < 10);
+
+    console.log(answers); 
+    console.log(correct_api);                  
+}
 
 getCategories()
