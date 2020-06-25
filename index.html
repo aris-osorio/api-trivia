@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="form-group">
+            <label for="select-categories">Elige la categoria</label>
+            <select onchange="selectCategory()" class="form-control" id="select-categories">
+              <!-- Aquí van las opciones generadas con javascript -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="select-types">Elige el tipo de pregunta</label>
+            <select onchange="selectType()" class="form-control" id="select-types">
+                <option value="multiple">Con respuesta multiple</option>
+                <option value="boolean">Verdadero/Falso</option>
+            </select>
+        </div>
+        <div>
+            <button type="button" onclick="getCuestions()" class="btn btn-primary btn-lg btn-block">Mostrar preguntas</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="container row" id="questions-form">
+            <!-- Aquí van las preguntas generadas con javascript -->
+        </div>
+    </div>
+    <script src="./scripts.js"></script>
+</body>
+</html>
