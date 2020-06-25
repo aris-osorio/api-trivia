@@ -66,7 +66,7 @@ function printCuestions(questions)
         questions.forEach(question =>
             {   
                
-                html += `<div class="card mt-5 col-4 " style="width: 18rem;">
+                html += `<div id="${index}" class="card mt-5 col-4 border-primary" style="width: 18rem;">
                               <div class="card-body">
                                   <h5 class="card-title text-justify">${question.question}</h5>
                                   <div class="ml-4 mt-3">
@@ -87,7 +87,7 @@ function printCuestions(questions)
                           </div>`;
                 if(index == questions.length - 1)
                 {
-                    html += `<div class="card mt-5 row col-8 ml-1">
+                    html += `<div class="card mt-5 row col-8 ml-1 border-primary">
                                 <div class="d-flex">
                                     <div class=" mt-5 col-6 " style="width: 18rem;">
                                         <h1 class="card-title text-center" id="correct" style="color: #33FF93;">0</h1>
@@ -99,7 +99,7 @@ function printCuestions(questions)
                                     </div>
                                 </div>
                                
-                                <button type="button" onclick="answers_user()" class="btn btn-primary btn-lg btn-block mt-5">Enviar Respuestas</button>
+                                <button type="button" onclick="answers_user()" class="btn btn-primary btn-lg btn-block mt-3">Enviar Respuestas</button>
                             </div>`;      
                 }     
                 index ++; 
@@ -122,7 +122,7 @@ function printCuestions(questions)
                     correct_api[index] = answers[1];
                 
                 }
-                html += `<div class="card mt-5 col-4 " style="width: 18rem;">
+                html += `<div id="${index}" class="card mt-5 col-4 border-primary" style="width: 18rem;">
                               <div class="card-body">
                                   <h5 class="card-title text-justify">${question.question}</h5>
                                   <div class="ml-4 mt-3">
@@ -138,7 +138,7 @@ function printCuestions(questions)
 
                           if(index == questions.length - 1)
                           {
-                              html += `<div class="card mt-5 row col-8 ml-1">
+                              html += `<div class="card mt-5 row col-8 ml-1 border-primary">
                                           <div class="d-flex">
                                               <div class=" mt-5 col-6 " style="width: 18rem;">
                                                   <h1 class="card-title text-center" id="correct" style="color: #33FF93;">0</h1>
@@ -150,7 +150,7 @@ function printCuestions(questions)
                                               </div>
                                           </div>
                                          
-                                          <button type="button" onclick="answers_user()" class="btn btn-primary btn-lg btn-block mt-5">Enviar Respuestas</button>
+                                          <button type="button" onclick="answers_user()" class="btn btn-primary btn-lg btn-block mt-3">Enviar Respuestas</button>
                                       </div>`;
                           }
                 index++;      
@@ -164,7 +164,6 @@ function printCuestions(questions)
 //obtengo preguntas de la api
 function getCuestions()
 {
-    alert(`se imprimiran preguntas`)
     endpoint = `https://opentdb.com/api.php?amount=10&category=${categoryID}&type=${type}`
 
     fetch(endpoint)
@@ -200,27 +199,20 @@ function answers_user()
                                 if(answers[count]==correct_api[count])
                                 {
                                     correct++;
+                                    document.getElementById(count).className = "card mt-5 col-4 border-success";
                                 }
                                 else
                                 {
                                     wrong++;
+                                    document.getElementById(count).className = "card mt-5 col-4 border-danger";
                                 }
                             }           
                         });
         count++;                
     }while(count < 10);
 
-    console.log(answers); 
-    console.log(correct_api); 
-
-    console.log(correct); 
-    console.log(wrong); 
-
     let html_correct = document.getElementById("correct");
     let html_wrong = document.getElementById("wrong");
-
-    console.log(html_correct); 
-    console.log(html_wrong); 
 
     html_correct.innerHTML = correct;
     html_wrong.innerHTML = wrong;
