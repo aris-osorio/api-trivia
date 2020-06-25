@@ -90,19 +90,18 @@ function printCuestions(questions)
                     html += `<div class="card mt-5 row col-8 ml-1">
                                 <div class="d-flex">
                                     <div class=" mt-5 col-6 " style="width: 18rem;">
-                                        <h1 class="card-title text-center" id="correct">0</h1>
+                                        <h1 class="card-title text-center" id="correct" style="color: #33FF93;">0</h1>
                                         <h5 class="card-title text-center">Respuestas correctas</h5>
                                     </div>
                                     <div class=" mt-5 col-6 " style="width: 18rem;">
-                                        <h1 class="card-title text-center " id="wrong">0</h1>
+                                        <h1 class="card-title text-center " id="wrong" style="color: #FF3333;">0</h1>
                                         <h5 class="card-title text-center">Respuestas incorrectas</h5>
                                     </div>
                                 </div>
                                
                                 <button type="button" onclick="answers_user()" class="btn btn-primary btn-lg btn-block mt-5">Enviar Respuestas</button>
-                            </div>`;
-                }    
-                correct_api[index] = question.correct_answer; 
+                            </div>`;      
+                }     
                 index ++; 
             });
     }
@@ -142,11 +141,11 @@ function printCuestions(questions)
                               html += `<div class="card mt-5 row col-8 ml-1">
                                           <div class="d-flex">
                                               <div class=" mt-5 col-6 " style="width: 18rem;">
-                                                  <h1 class="card-title text-center" id="correct">0</h1>
+                                                  <h1 class="card-title text-center" id="correct" style="color: #33FF93;">0</h1>
                                                   <h5 class="card-title text-center">Respuestas correctas</h5>
                                               </div>
                                               <div class=" mt-5 col-6 " style="width: 18rem;">
-                                                  <h1 class="card-title text-center " id="wrong">0</h1>
+                                                  <h1 class="card-title text-center " id="wrong" style="color: #FF3333;">0</h1>
                                                   <h5 class="card-title text-center">Respuestas incorrectas</h5>
                                               </div>
                                           </div>
@@ -183,22 +182,49 @@ function answers_user()
     let options;
     let answers =[];
     let count = 0;
+    let correct = 0;
+    let wrong = 0;
 
     do
     {
         options= document.getElementsByName(count);
         options.forEach(option =>
                         {
+                            if(type =="multiple")
+                            {
+                                correct_api[count] = options[0].value;
+                            }
                             if(option.checked)
                             {
                                 answers[count] = option.value;
+                                if(answers[count]==correct_api[count])
+                                {
+                                    correct++;
+                                }
+                                else
+                                {
+                                    wrong++;
+                                }
                             }           
                         });
         count++;                
     }while(count < 10);
 
     console.log(answers); 
-    console.log(correct_api);                  
+    console.log(correct_api); 
+
+    console.log(correct); 
+    console.log(wrong); 
+
+    let html_correct = document.getElementById("correct");
+    let html_wrong = document.getElementById("wrong");
+
+    console.log(html_correct); 
+    console.log(html_wrong); 
+
+    html_correct.innerHTML = correct;
+    html_wrong.innerHTML = wrong;
+
 }
 
 getCategories()
